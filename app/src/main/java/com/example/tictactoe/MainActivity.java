@@ -4,9 +4,11 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -21,12 +23,25 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private int playerTwoPoints;
     private int moves;
 
+    private String playerOneName;
+    private String playerTwoName;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         tvPlayerOne = findViewById(R.id.textview_player1);
         tvPlayerTwo = findViewById(R.id.textview_player2);
+
+        playerOnePoints = 0;
+        playerTwoPoints = 0;
+
+        playerOneName = getIntent().getExtras().getString("ValuePlayerOne");
+        playerTwoName = getIntent().getExtras().getString("ValuePlayerTwo");
+
+        tvPlayerOne.setText(playerOneName + ": " + playerOnePoints);
+        tvPlayerTwo.setText(playerTwoName + ": " + playerTwoPoints);
 
         for(int i = 0; i < 3; i++)
         {
@@ -38,7 +53,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 buttons[i][j].setOnClickListener(this);
             }
         }
+
         ImageButton reset = findViewById(R.id.resetbtn_id);
+
         reset.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -76,14 +93,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
     public void playerOneWins(){
         playerOnePoints++;
-        displayToastText("Winner: Player 1");
+        displayToastText("Winner: " + playerOneName);
         resetAllButtonText();
         updateScore();
     }
 
     public void playerTwoWins(){
         playerTwoPoints++;
-        displayToastText("Winner: Player 2");
+        displayToastText("Winner: " + playerTwoName);
         resetAllButtonText();
         updateScore();
     }
@@ -114,8 +131,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     public void updateScore(){
-        tvPlayerOne.setText("Player 1: " + playerOnePoints);
-        tvPlayerTwo.setText("Player 2: " + playerTwoPoints);
+        tvPlayerOne.setText(playerOneName + ": " + playerOnePoints);
+        tvPlayerTwo.setText(playerTwoName + ": " + playerTwoPoints);
     }
 
     public void displayToastText(CharSequence text){
